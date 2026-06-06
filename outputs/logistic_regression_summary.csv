@@ -1,0 +1,3 @@
+Model,Threshold,F1 Score,Sensitivity,Specificity,ROC AUC Score,Balanced Accuracy Score,MCC
+Logistic Regression Without Pipeline,0.312,0.7385,0.5556,0.79,0.8263,0.6728,0.3504
+Logistic Regression With Pipeline,0.312,0.7385,0.8889,0.72,0.8263,0.8044,0.5811

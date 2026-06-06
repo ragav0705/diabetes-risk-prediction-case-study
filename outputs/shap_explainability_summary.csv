@@ -1,0 +1,33 @@
+SHAP DEBUG SUMMARY
+SECTION,Metric,Value
+SHAP Debug Summary,X_test rows,154
+SHAP Debug Summary,X_test columns,8
+SHAP Debug Summary,X_test transformed rows,154
+SHAP Debug Summary,X_test transformed columns,8
+SHAP Debug Summary,Number of transformed features,8
+SHAP Debug Summary,Constant transformed feature count,0
+
+TOP RANDOM FOREST TRANSFORMED FEATURE IMPORTANCE
+SECTION,Feature,Importance
+Random Forest Feature Importance,invalid__Glucose,0.34925804780287645
+Random Forest Feature Importance,invalid__BMI,0.16498412621731015
+Random Forest Feature Importance,other__Age,0.11915515696729988
+Random Forest Feature Importance,invalid__Insulin,0.09704678099908084
+Random Forest Feature Importance,other__DiabetesPedigreeFunction,0.0853266901444411
+Random Forest Feature Importance,invalid__SkinThickness,0.07445095684973928
+Random Forest Feature Importance,other__Pregnancies,0.0696237505299674
+Random Forest Feature Importance,invalid__BloodPressure,0.04015449048928499
+
+SHAP ORIGINAL FEATURE IMPORTANCE
+SECTION,Feature,Mean Absolute SHAP Value
+SHAP Feature Importance,Glucose,0.10219252612658906
+SHAP Feature Importance,BMI,0.06038099335842904
+SHAP Feature Importance,Age,0.040091799308961375
+SHAP Feature Importance,Pregnancies,0.03217800110408296
+SHAP Feature Importance,Insulin,0.031421749759429046
+SHAP Feature Importance,DiabetesPedigreeFunction,0.026530700430120815
+SHAP Feature Importance,SkinThickness,0.0177175488822256
+SHAP Feature Importance,BloodPressure,0.006661307383083858
+
+CONSTANT TRANSFORMED FEATURES
+SECTION,Feature Index,Feature Name
