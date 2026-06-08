@@ -2,257 +2,357 @@
 
 ## Overview
 
-This repository contains healthcare machine learning projects focused on diabetes risk prediction using clinical healthcare datasets.
+This repository contains healthcare machine learning projects focused on diabetes risk prediction using the Pima Indians Diabetes Dataset.
 
-The project demonstrates end-to-end machine learning workflow including data preprocessing, model development, explainable AI (XAI), threshold optimization, and clinical risk prediction.
+The project demonstrates an end-to-end healthcare ML workflow: data cleaning, preprocessing, model training, model comparison, threshold optimization, explainable AI using SHAP, patient-level diabetes risk prediction, and prediction-history logging.
 
----
-
-# Project Objectives
-
-* Predict diabetes risk using clinical healthcare parameters
-* Compare traditional and ensemble machine learning algorithms
-* Evaluate model performance using clinically relevant metrics
-* Improve model interpretability through Explainable AI (SHAP)
-* Develop a patient-level risk prediction engine
-* Support healthcare decision-making through predictive analytics
+> **Clinical Safety Statement:** This project is an educational healthcare ML prototype. It is not intended for diagnosis, treatment, or independent clinical decision-making.
 
 ---
 
-# Dataset
+## Project Objectives
+
+- Predict diabetes risk using clinical healthcare parameters
+- Compare Logistic Regression and Random Forest classification models
+- Apply preprocessing pipelines for missing-value handling and feature scaling
+- Evaluate model performance using clinically relevant metrics
+- Optimize classification threshold for diabetes-risk screening
+- Use SHAP explainability to support model interpretation
+- Build a patient-level diabetes risk prediction function
+- Maintain prediction history using CSV and Excel outputs
+
+---
+
+## Dataset
 
 **Dataset:** Pima Indians Diabetes Dataset
 
-Clinical variables used:
+### Input Variables
 
-* Pregnancies
-* Glucose
-* Blood Pressure
-* Skin Thickness
-* Insulin
-* BMI
-* Diabetes Pedigree Function
-* Age
+- Pregnancies
+- Glucose
+- Blood Pressure
+- Skin Thickness
+- Insulin
+- BMI
+- Diabetes Pedigree Function
+- Age
 
-**Target Variable:**
+### Target Variable
 
-* Outcome (Diabetes: Yes / No)
+- Outcome  
+  - `0` = No diabetes
+  - `1` = Diabetes
 
----
+### Data Cleaning Approach
 
-# Project Modules
+In the notebooks, clinically invalid zero values are treated as missing values for selected variables:
 
-## 1. Logistic Regression for Diabetes Prediction
+- Glucose
+- Blood Pressure
+- Skin Thickness
+- Insulin
+- BMI
 
-### Objective
-
-Evaluate Logistic Regression performance for diabetes risk prediction using healthcare clinical parameters.
-
-### Key Features
-
-* Missing value handling
-* Median imputation
-* Feature scaling
-* Pipeline preprocessing
-* Threshold optimization
-* Sensitivity and specificity analysis
-* Clinical performance evaluation
-
-### Performance
-
-* ROC AUC: ~0.80
-* MCC: ~0.58
-* Good sensitivity for diabetes screening
+Missing values are handled using median imputation. Pipeline-based notebooks use `SimpleImputer` and `StandardScaler` inside a `ColumnTransformer`.
 
 ---
 
-## 2. Random Forest Classification for Diabetes Prediction
+## Notebook Modules
 
-### Objective
+### 1. Logistic Regression Diabetes Prediction
 
-Compare ensemble learning performance against Logistic Regression models.
+**Notebook:** `Logistic_Regression_Diabetes.ipynb`
 
-### Key Features
+#### Purpose
 
-* Random Forest Classification
-* Pipeline preprocessing
-* Cross-validation analysis
-* Threshold optimization
-* Feature importance analysis
-* Clinical risk prediction
+To evaluate Logistic Regression for diabetes-risk prediction using both non-pipeline and pipeline-based approaches.
 
-### Performance
+#### Main Steps
 
-* ROC AUC: ~0.94
-* MCC: ~0.75
-* Improved predictive performance over Logistic Regression
+- Load Pima Indians Diabetes Dataset
+- Remove duplicate records
+- Replace invalid zero values with missing values
+- Apply median imputation
+- Apply feature scaling using `StandardScaler`
+- Train Logistic Regression model
+- Generate predicted probability
+- Identify best threshold using F1 score
+- Evaluate model using clinical classification metrics
+- Save summary tables and plots to the `outputs/` folder
 
----
+#### Generated Outputs
 
-## 3. SHAP Explainable AI (XAI)
-
-### Objective
-
-Improve transparency and interpretability of machine learning predictions.
-
-### Features
-
-* SHAP Summary Plot
-* SHAP Beeswarm Plot
-* Global Feature Importance
-* Local Patient-Level Explanation
-* Clinical interpretation support
-
-### Benefits
-
-* Identifies the most influential clinical variables
-* Explains model predictions
-* Supports healthcare decision-making
-* Enhances model trustworthiness
+- `logistic_regression_summary.csv`
+- `logistic_confusion_matrix_without_pipeline.png`
+- `logistic_confusion_matrix_with_pipeline.png`
+- `logistic_classification_report_without_pipeline.png`
+- `logistic_classification_report_with_pipeline.png`
 
 ---
 
-## 4. Diabetes Risk Prediction Engine
+### 2. Random Forest Classifier
 
-### Objective
+**Notebook:** `Random_forest_classifier.ipynb`
 
-Generate patient-level diabetes risk predictions using trained machine learning models.
+#### Purpose
 
-### Input Parameters
+To compare Random Forest performance against Logistic Regression and build a stronger diabetes-risk prediction model.
 
-* Glucose
-* Blood Pressure
-* BMI
-* Insulin (Optional)
+#### Main Steps
 
-### Output
+- Train Random Forest without pipeline
+- Train Random Forest with preprocessing pipeline
+- Use `StratifiedKFold` cross-validation
+- Calculate ROC AUC and F1 cross-validation scores
+- Optimize classification threshold using precision-recall results
+- Evaluate sensitivity, specificity, MCC, balanced accuracy, and Cohen Kappa
+- Generate feature-importance outputs
+- Save confusion matrices and classification report images
+- Build SHAP explainability outputs
+- Build patient-level diabetes risk prediction function
+- Save prediction history in CSV and Excel format
 
-* Risk Probability
-* Risk Percentage
-* Prediction Status
-* Risk Category
-* Clinical Interpretation
+#### Generated Outputs
 
-### Risk Categories
-
-| Risk Probability | Category      |
-| ---------------- | ------------- |
-| < 0.25           | Low Risk      |
-| 0.25 – 0.50      | Moderate Risk |
-| > 0.50           | High Risk     |
-
-### Example Output
-
-| Parameter       | Value         |
-| --------------- | ------------- |
-| Glucose         | 124           |
-| Blood Pressure  | 70            |
-| BMI             | 31.2          |
-| Risk Percentage | 33.12%        |
-| Prediction      | At Risk       |
-| Risk Category   | Moderate Risk |
+- `random_forest_without_pipeline_summary.csv`
+- `random_forest_with_pipeline_summary.csv`
+- `random_forest_without_pipeline_feature_importance.csv`
+- `random_forest_with_pipeline_feature_importance.csv`
+- `confusion_matrix_without_pipeline.png`
+- `confusion_matrix_with_pipeline.png`
+- `classification_report_without_pipeline.png`
+- `classification_report_with_pipeline.png`
+- `shap_explainability_summary.csv`
+- `shap_beeswarm_plot.png`
+- `shap_bar_plot.png`
+- `diabetes_prediction_history.csv`
+- `diabetes_prediction_history.xlsx`
 
 ---
 
-## 5. Prediction Logging System
+### 3. Random Forest Threshold Optimization
 
-### Features
+**Notebook:** `Random_forest_classifier_model_improvement.ipynb`
 
-* Automatic prediction history tracking
-* CSV export
-* Excel export
-* Timestamp recording
-* Prediction audit trail
+#### Purpose
 
-Generated Files:
+To test multiple probability thresholds and identify a clinically useful cutoff for diabetes-risk classification.
 
-* diabetes_prediction_history.csv
-* diabetes_prediction_history.xlsx
+#### Main Steps
 
----
+- Train Random Forest pipeline model
+- Calculate predicted probabilities
+- Test thresholds from `0.10` to `0.90`
+- Calculate sensitivity, specificity, precision, F1 score, MCC, Youden Index, false positives, and false negatives
+- Identify the best threshold using Youden Index
+- Save threshold optimization results
 
-# Model Evaluation Metrics
+#### Generated Outputs
 
-The project evaluates models using:
-
-* ROC AUC
-* F1 Score
-* Sensitivity
-* Specificity
-* Matthews Correlation Coefficient (MCC)
-* Cohen Kappa
-* Confusion Matrix
-* Classification Report
+- `random_forest_threshold_output.csv`
+- `threshold_optimization_results.png`
+- `best_threshold_youden_index.png`
 
 ---
 
-# Technologies Used
+## Diabetes Risk Prediction Engine
 
-* Python
-* Pandas
-* NumPy
-* Scikit-Learn
-* Matplotlib
-* SHAP
-* OpenPyXL
-* Jupyter Notebook
+The Random Forest notebook includes a patient-level prediction function:
 
----
+```python
+predict_diabetes_risk(
+    age,
+    glucose,
+    blood_pressure,
+    bmi,
+    insulin=None,
+    pregnancies=None,
+    skin_thickness=None,
+    diabetes_pedigree_function=None,
+    threshold=0.25
+)
+```
 
-# Repository Structure
+### Required Inputs
 
-```text
-datasets/
-models/
-notebooks/
-outputs/
-reports/
-scripts/
+- Age
+- Glucose
+- Blood Pressure
+- BMI
+
+### Optional Inputs
+
+- Insulin
+- Pregnancies
+- Skin Thickness
+- Diabetes Pedigree Function
+
+When optional values are not provided, the function uses the dataset median value.
+
+### Prediction Output
+
+- Age
+- Glucose
+- Blood Pressure
+- BMI
+- Insulin status
+- Risk Probability
+- Risk Percentage
+- Threshold Used
+- Prediction
+- Risk Category
+- Advice / Interpretation
+
+### Risk Category Logic Used in Notebook
+
+| Risk Probability | Category |
+|---:|---|
+| `< 0.25` | Normal / Low Risk |
+| `0.25 – < 0.40` | Prediabetic / Moderate Risk |
+| `>= 0.40` | Diabetic / High Risk |
+
+### Example Input Used in Notebook
+
+```python
+result = predict_diabetes_risk(
+    age=39,
+    glucose=128,
+    blood_pressure=70,
+    bmi=24,
+    insulin=None
+)
 ```
 
 ---
 
-# Healthcare Analytics Focus
+## Model Evaluation Metrics
 
-This repository is part of ongoing work in:
+The notebooks evaluate model performance using:
 
-* Healthcare Analytics
-* Clinical Laboratory Intelligence Systems
-* Predictive Healthcare Modeling
-* Explainable AI in Healthcare
-* Clinical Decision Support Systems
-* Operational Healthcare Analytics
-
----
-
-# Future Enhancements
-
-* Streamlit Web Application
-* XGBoost Implementation
-* Patient PDF Reports
-* Model Monitoring Dashboard
-* Multi-Disease Risk Prediction
-* Clinical Risk Stratification Engine
-
-## Clinical Safety and Validation Documentation
-
-This project includes additional healthcare ML documentation to describe model risks, clinical limitations, and validation requirements.
-
-- [Model Card](reports/model_card.md)
-- [Clinical Limitations](reports/clinical_limitations.md)
-- [Validation Summary](reports/validation_summary.md)
-
-This model is an educational healthcare ML prototype and is not intended for clinical diagnosis, treatment, or direct patient care.
-
-# Clinical Use Statement: For educational demonstration only. Not intended for diagnosis, treatment, or independent clinical decision-making.
+- Confusion Matrix
+- Classification Report
+- ROC AUC
+- F1 Score
+- Sensitivity / Recall
+- Specificity
+- Precision
+- Balanced Accuracy
+- Matthews Correlation Coefficient (MCC)
+- Cohen Kappa
+- Youden Index
+- False Positives
+- False Negatives
 
 ---
 
-# Author
+## Explainable AI
 
-## Dr. P. Ragavendran
+SHAP explainability is implemented in the Random Forest notebook.
 
-Clinical Laboratory Operations
-Healthcare Analytics
-Clinical Intelligence Systems
+### SHAP Outputs
+
+- SHAP debug summary
+- Random Forest transformed feature importance
+- SHAP original feature importance
+- Constant transformed feature check
+- SHAP beeswarm plot
+- SHAP bar plot
+
+### Purpose
+
+SHAP is used to understand which clinical variables contribute most strongly to the model's diabetes-risk prediction.
+
+---
+
+## Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Scikit-Learn
+- Matplotlib
+- SHAP
+- OpenPyXL
+- Jupyter Notebook
+
+---
+
+## Suggested Repository Structure
+
+```text
+diabetes-risk-prediction-analysis/
+│
+├── datasets/
+│   └── diabetes_pima_indian.csv
+│
+├── notebooks/
+│   ├── Logistic_Regression_Diabetes.ipynb
+│   ├── Random_forest_classifier.ipynb
+│   └── Random_forest_classifier_model_improvement.ipynb
+│
+├── outputs/
+│   ├── model summaries
+│   ├── confusion matrix images
+│   ├── classification report images
+│   ├── feature importance files
+│   ├── SHAP outputs
+│   └── prediction history files
+│
+├── reports/
+│   ├── model_card.md
+│   ├── clinical_limitations.md
+│   └── validation_summary.md
+│
+└── README.md
+```
+
+---
+
+## Current Project Status
+
+Completed:
+
+- Logistic Regression model
+- Random Forest model
+- Pipeline preprocessing
+- Threshold optimization
+- Feature importance analysis
+- SHAP explainability
+- Patient-level risk prediction function
+- Prediction-history logging
+
+Planned / Future Enhancements:
+
+- XGBoost classifier
+- Streamlit web application
+- PDF patient risk reports
+- Model monitoring dashboard
+- Multi-disease prediction engine
+- External validation using additional datasets
+- Model calibration analysis
+
+---
+
+## Clinical Limitations
+
+This project should not be used as a standalone clinical decision system.
+
+Important limitations:
+
+- The dataset is limited and may not represent all populations.
+- The model predicts statistical risk, not confirmed diagnosis.
+- Clinical diagnosis requires medical history, symptoms, laboratory confirmation, and physician interpretation.
+- Thresholds must be validated before real clinical use.
+- External validation is required before deployment in any healthcare environment.
+
+---
+
+## Author
+
+**Dr. P. Ragavendran**
+
+Clinical Laboratory Operations  
+Healthcare Analytics  
+Clinical Intelligence Systems  
 Machine Learning in Healthcare
